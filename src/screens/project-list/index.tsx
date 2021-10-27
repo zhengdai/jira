@@ -5,8 +5,6 @@ import * as qs from "qs";
 import {cleanObject, useDebounce, useMount} from "../../utils";
 import {useHttp} from "../../utils/http";
 
-const apiUrl = process.env.REACT_APP_API_URL;
-
 export const ProjectListScreen = () => {
   const [param, setParam] = useState({
     name: '',
@@ -17,7 +15,7 @@ export const ProjectListScreen = () => {
   const [list, setList] = useState([])
   const client = useHttp();
   useEffect(() => {
-    client("projects", {data: cleanObject({debounceParam})}).then(setList)
+    client("projects", {data: cleanObject(debounceParam)}).then(setList)
   }, [debounceParam]);
 
   useMount(() => {
