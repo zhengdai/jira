@@ -1,9 +1,9 @@
 import {SearchPanel} from "screens/project-list/search-panel";
 import {List} from "screens/project-list/list";
 import {useEffect, useState} from "react";
-import * as qs from "qs";
 import {cleanObject, useDebounce, useMount} from "../../utils";
 import {useHttp} from "../../utils/http";
+import styled from "@emotion/styled";
 
 export const ProjectListScreen = () => {
   const [param, setParam] = useState({
@@ -22,8 +22,15 @@ export const ProjectListScreen = () => {
     client('users').then(setUsers);
   });
 
-  return <div>
-    <SearchPanel users={users} param={param} setParam={setParam}/>
-    <List users={users} list={list}/>
-  </div>
+  return (
+    <Container>
+      <h1>项目列表</h1>
+      <SearchPanel users={users} param={param} setParam={setParam}/>
+      <List users={users} list={list}/>
+    </Container>
+  );
 }
+
+const Container = styled.div`
+  padding: 3.2rem
+`;
