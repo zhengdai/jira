@@ -6,14 +6,12 @@ import styled from "@emotion/styled";
 import {useProjects} from "../../utils/project";
 import {useUsers} from "../../utils/user";
 import {Typography} from "antd";
-import {useUrlQueryParam} from "../../utils/url";
+import {useProjectsSearchParams} from "screens/project-list/util";
 
 export const ProjectListScreen = () => {
   useDocumentTitle("项目列表", false);
-  const [param, setParam] = useUrlQueryParam(["name", "personId"]);
-  const debounceParam = useDebounce(param, 2000);
-
-  const {isLoading, error, data: list} = useProjects(debounceParam);
+  const [param, setParam] = useProjectsSearchParams();
+  const {isLoading, error, data: list} = useProjects(useDebounce(param, 200));
   const {data: users} = useUsers();
 
   return (
@@ -30,7 +28,7 @@ export const ProjectListScreen = () => {
   );
 };
 
-ProjectListScreen.whyDidYouRender = false;
+ProjectListScreen.whyDidYouRender = true;
 
 const Container = styled.div`
   padding: 3.2rem
