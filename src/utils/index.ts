@@ -76,3 +76,14 @@ export const subset = <O extends { [key in string]: unknown},
   );
   return Object.fromEntries(filteredEntries) as Pick<O, K>;
 }
+
+export const useMountedRef = () => {
+  const mountedRef = useRef(false);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  });
+  return mountedRef;
+}
