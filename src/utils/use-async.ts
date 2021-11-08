@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import {useMountedRef} from "./index";
 
 interface State<D> {
@@ -28,23 +28,28 @@ export const useAsync = <D>(initialState?:State<D>, initialConfig?:typeof defaul
 
     const [retry, setRetry] = useState(() => () => {});
 
-    const setData = (data: D) => {
-        setState({
-            data,
-            stat: 'success',
-            error: null,
-        });
-    }
+    const setData = useCallback(
+(data: D) =>
+            setState({
+                data,
+                stat: 'success',
+                error: null,
+            }),
+        []
+    );
 
-    const setError = (error: Error) => {
+    const setError = useCallback(
+        (error: Error) =>
         setState({
             data: null,
             stat: 'error',
             error,
-        });
-    }
+        }),
+        []
+    );
 
-    const run = (
+    const run = useCallback(
+    (
         promise: Promise<D>,
         runConfig?:{retry:() => Promise<D>}
     ) => {
@@ -52,11 +57,11 @@ export const useAsync = <D>(initialState?:State<D>, initialConfig?:typeof defaul
             throw new Error("请传入promise数据类型");
         }
         setRetry(() => () => {
-            if(runConfig?.retry) {
+            if (runConfig?.retry) {
                 run(runConfig?.retry(), runConfig);
             }
         });
-        setState({...state, stat:"loading"});
+        setState(prevState => ({...prevState, stat: "loading"}));
         return promise.then(data => {
             if (mountedRef.current) {
                 setData(data);
@@ -70,7 +75,9 @@ export const useAsync = <D>(initialState?:State<D>, initialConfig?:typeof defaul
             }
             return error;
         });
-    };
+    },
+        [config.throwOnError, mountedRef, setData, setError]
+    );
 
     return {
         isIdle: state.stat === 'idle',
