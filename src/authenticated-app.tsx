@@ -16,13 +16,27 @@ export const AuthenticatedApp = () => {
     const [projectModalOpen, setProjectModalOpen] = useState(false);
     return (
         <Container>
-            <PageHeader setProjectModalOpen={setProjectModalOpen} />
+            <PageHeader projectButton={
+                <ButtonNoPadding
+                    onClick={()=> setProjectModalOpen(true)}
+                    type={"link"}>
+                    创建项目
+                </ButtonNoPadding>
+            } />
             <Main>
                 <Router>
                     <Routes>
                         <Route path={"/projects"}
                                element={
-                                   <ProjectListScreen setProjectModalOpen={setProjectModalOpen}/>
+                                   <ProjectListScreen
+                                    projectButton={
+                                        <ButtonNoPadding
+                                            onClick={()=> setProjectModalOpen(true)}
+                                            type={"link"}>
+                                            创建项目
+                                        </ButtonNoPadding>
+                                    }
+                                   />
                                } />
                         <Route path={"/projects/:projectId/*"} element={<ProjectScreen/>}/>
                         <Route path={"/"} element={<Navigate to={"/projects"}/>}/>
@@ -37,7 +51,7 @@ export const AuthenticatedApp = () => {
 };
 
 const PageHeader = (props: {
-    setProjectModalOpen: (isOpen: boolean) => void;
+    projectButton:JSX.Element
 }) => {
     return (
         <Header between={true}>
@@ -45,7 +59,7 @@ const PageHeader = (props: {
                 <ButtonNoPadding type={"link"} onClick={resetRoute}>
                     <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
                 </ButtonNoPadding>
-                <ProjectPopover setProjectModalOpen={props.setProjectModalOpen}/>
+                <ProjectPopover {...props}/>
                 <span>用户</span>
             </HeaderLeft>
             <HeaderRight>

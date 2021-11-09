@@ -4,7 +4,7 @@ import {Divider, List, Popover, Typography} from "antd";
 import {ButtonNoPadding} from "./lib";
 
 export const ProjectPopover = (props:{
-    setProjectModalOpen:(isOpen:boolean) => void;
+    projectButton: JSX.Element
 }) => {
     const {data:projects, isLoading} = useProjects();
     const pinnedProjects = projects?.filter(project => project.pin);
@@ -15,17 +15,14 @@ export const ProjectPopover = (props:{
             <List>
                 {
                     pinnedProjects?.map(project => (
-                        <List.Item>
+                        <List.Item key={project.id}>
                             <List.Item.Meta title={project.name}/>
                         </List.Item>
                     ))
                 }
             </List>
             <Divider/>
-            <ButtonNoPadding
-                onClick={() => props.setProjectModalOpen(true)}
-                type={"link"}
-             >创建项目</ButtonNoPadding>
+            {props.projectButton}
         </ContentContainer>
     );
     return (
