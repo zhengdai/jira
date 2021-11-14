@@ -32,7 +32,7 @@ const undoReducer = <T>(state: State<T>, action: Action<T>) => {
         }
 
         case REDO: {
-            if (future.length === 0) return this.state;
+            if (future.length === 0) return state;
             const next = future[0];
             const newFuture = future.slice(1);
             return {
