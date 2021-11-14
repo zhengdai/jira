@@ -1,7 +1,6 @@
 import {Project} from "./list";
 import {User} from "./search-panel";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {projects} from "jira-dev-tool/dist/server/initial-data";
 import {AppDispatch, RootState} from "../../store";
 
 interface State {
